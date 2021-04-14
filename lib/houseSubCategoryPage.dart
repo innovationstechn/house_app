@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app1/model/SubCategoryHouseModel.dart';
+import 'package:flutter_app1/model/house_model.dart';
 
 import 'model/appbar.dart';
 
 class HouseSubCategoryPage extends StatefulWidget {
-  final SubCategoryHouseModel houseInfo;
+  final HouseModel houseInfo;
 
-  HouseSubCategoryPage({this.houseInfo});
+  HouseSubCategoryPage({required this.houseInfo});
 
   @override
   _HouseSubCategoryPage createState() {
@@ -30,7 +30,7 @@ class _HouseSubCategoryPage extends State<HouseSubCategoryPage> {
     // TODO: implement build
     return Scaffold(
       appBar: StandardAppBar(
-        title: "House No "+ widget.houseInfo.houseId.toString(),
+        title: "House No " + widget.houseInfo.houseID.toString(),
       ),
       body: Column(
         children: [
@@ -72,7 +72,7 @@ class _HouseSubCategoryPage extends State<HouseSubCategoryPage> {
 class _DummyCard extends StatelessWidget {
   final String no;
 
-  _DummyCard({this.no});
+  _DummyCard({required this.no});
 
   @override
   Widget build(BuildContext context) {
