@@ -12,4 +12,5 @@ class HouseModel {
 
   HouseModel(
       {required this.houseID, required this.number, required this.visited});
+
 }

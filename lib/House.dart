@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app1/houseNumberWidget.dart';
-import 'package:flutter_app1/model/SubCategoryHouseModel.dart';
+
+import 'model/house_model.dart';
 
 class House extends StatefulWidget {
   final int houseId;
@@ -46,8 +47,8 @@ class _House extends State<House> {
             children: [
               for (int j = i; j < i + 4; j++)
                 HouseNumber(
-                  houseInfo: SubCategoryHouseModel(
-                      houseId: widget.houseId,
+                  houseInfo: HouseModel(
+                      houseID: widget.houseId,
                       number: widget.houseSubId[j],
                       visited: widget.visited[j]),
                   color: Colors.green,
@@ -55,8 +56,8 @@ class _House extends State<House> {
                 ),
               if (i + 5 == widget.houseSubId.length)
                 HouseNumber(
-                  houseInfo: SubCategoryHouseModel(
-                      houseId: widget.houseId,
+                  houseInfo: HouseModel(
+                      houseID: widget.houseId,
                       number: widget.houseSubId[i + 4],
                       visited: widget.visited[i + 4]),
                   color: Colors.green,
@@ -64,8 +65,8 @@ class _House extends State<House> {
                 )
               else
                 HouseNumber(
-                  houseInfo: SubCategoryHouseModel(
-                      houseId: widget.houseId,
+                  houseInfo: HouseModel(
+                      houseID: widget.houseId,
                       number: widget.houseSubId[i + 4],
                       visited: widget.visited[i + 4]),
                   color: Colors.green,
@@ -82,16 +83,16 @@ class _House extends State<House> {
             children: [
               for (int j = i; j < i + remainingLength - 1; j++)
                 HouseNumber(
-                  houseInfo: SubCategoryHouseModel(
-                      houseId: widget.houseId,
+                  houseInfo: HouseModel(
+                      houseID: widget.houseId,
                       number: widget.houseSubId[j],
                       visited: widget.visited[j]),
                   color: Colors.green,
                   arrowDirection: "forward",
                 ),
               HouseNumber(
-                houseInfo: SubCategoryHouseModel(
-                    houseId: widget.houseId,
+                houseInfo:HouseModel(
+                    houseID: widget.houseId,
                     number: widget.houseSubId[i + remainingLength - 1],
                     visited: widget.visited[i + remainingLength - 1]),
                 color: Colors.green,
@@ -109,8 +110,8 @@ class _House extends State<House> {
             children: [
               if (i + 5 != widget.houseSubId.length)
                 HouseNumber(
-                  houseInfo: SubCategoryHouseModel(
-                      houseId: widget.houseId,
+                  houseInfo: HouseModel(
+                      houseID: widget.houseId,
                       number: widget.houseSubId[i + 4],
                       visited: widget.visited[i + 4]),
                   color: Colors.green,
@@ -118,8 +119,8 @@ class _House extends State<House> {
                 )
               else
                 HouseNumber(
-                  houseInfo: SubCategoryHouseModel(
-                      houseId: widget.houseId,
+                  houseInfo: HouseModel(
+                      houseID: widget.houseId,
                       number: widget.houseSubId[i + 4],
                       visited: widget.visited[i + 4]),
                   color: Colors.green,
@@ -127,8 +128,8 @@ class _House extends State<House> {
                 ),
               for (int j = i + 3; j >= i; j--)
                 HouseNumber(
-                  houseInfo: SubCategoryHouseModel(
-                      houseId: widget.houseId,
+                  houseInfo: HouseModel(
+                      houseID: widget.houseId,
                       number: widget.houseSubId[j],
                       visited: widget.visited[j]),
                   color: Colors.green,
@@ -145,8 +146,8 @@ class _House extends State<House> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               HouseNumber(
-                houseInfo: SubCategoryHouseModel(
-                    houseId: widget.houseId,
+                houseInfo: HouseModel(
+                    houseID: widget.houseId,
                     number: widget.houseSubId[i + remainingLength - 1],
                     visited: widget.visited[i + remainingLength - 1]),
                 color: Colors.green,
@@ -154,8 +155,8 @@ class _House extends State<House> {
               ),
               for (int j = i + remainingLength - 2; j >= i; j--)
                 HouseNumber(
-                  houseInfo: SubCategoryHouseModel(
-                      houseId: widget.houseId,
+                  houseInfo: HouseModel(
+                      houseID: widget.houseId,
                       number: widget.houseSubId[j],
                       visited: widget.visited[j]),
                   color: Colors.green,

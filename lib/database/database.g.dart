@@ -138,7 +138,7 @@ class _$HouseDAO extends HouseDAO {
 
   @override
   Future<List<HouseModel>> getAllProgress() async {
-    return _queryAdapter.queryList('SELECT * FROM Person',
+    return _queryAdapter.queryList('SELECT * FROM HouseModel ORDER BY houseID',
         mapper: (Map<String, Object?> row) => HouseModel(
             houseID: row['houseID'] as int,
             number: row['number'] as int,
@@ -146,9 +146,29 @@ class _$HouseDAO extends HouseDAO {
   }
 
   @override
-  Future<HouseModel?> getHouse(int houseID, int number) async {
+  Future<List<HouseModel>> getAllHouseId() async {
+    return _queryAdapter.queryList('SELECT DISTINCT houseID FROM HouseModel',
+        mapper: (Map<String, Object?> row) => HouseModel(
+            houseID: (row['houseID'] !=null)? row['houseID'] as int:0,
+            number: (row['number'] !=null)? row['number'] as int:0,
+            visited: (row['visited'] as int) != 0));
+  }
+
+  @override
+  Future<List<HouseModel>> getHousesById({required int houseID}) async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM HouseModel WHERE houseID = ?1',
+        mapper: (Map<String, Object?> row) => HouseModel(
+            houseID: row['houseID'] as int,
+            number: row['number'] as int,
+            visited: (row['visited'] as int) != 0),
+        arguments: [houseID]);
+  }
+
+  @override
+  Future<HouseModel?> getHouse({required int houseID,required int number}) async {
     return _queryAdapter.query(
-        'SELECT * FROM Person WHERE houseID = ?1 AND number = ?2',
+        'SELECT * FROM HouseModel WHERE houseID = ?1 AND number = ?2',
         mapper: (Map<String, Object?> row) => HouseModel(
             houseID: row['houseID'] as int,
             number: row['number'] as int,
