@@ -1,16 +1,52 @@
-// database.dart
+import 'package:moor/moor.dart';
+import 'package:moor/ffi.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as p;
+import 'dart:io';
 
-// required package imports
-import 'dart:async';
-import 'package:floor/floor.dart';
-import 'package:sqflite/sqflite.dart' as sqflite;
+part 'database.g.dart';
 
-import '../model/house_model.dart';
-import 'house_dao.dart';
+class Houses extends Table {
+  IntColumn get houseID => integer()();
+  IntColumn get number => integer()();
+  BoolColumn get visited => boolean()();
 
-part 'database.g.dart'; // the generated code will be there
+  // Need to override primary key method to declare custom primary keys.
+  @override
+  Set<Column> get primaryKey => {houseID};
+}
 
-@Database(version: 1, entities: [HouseModel])
-abstract class AppDatabase extends FloorDatabase {
-  HouseDAO get houseProgressDAO;
+LazyDatabase _openConnection() {
+  // the LazyDatabase util lets us find the right location for the file async.
+  return LazyDatabase(() async {
+    // put the database file, called db.sqlite here, into the documents folder
+    // for your app.
+    final dbFolder = await getApplicationDocumentsDirectory();
+    final file = File(p.join(dbFolder.path, 'db.sqlite'));
+    return VmDatabase(file);
+  });
+}
+
+// This annotation tells moor to prepare a database class that uses both of the
+@UseMoor(tables: [Houses])
+class HouseAppDatabase extends _$HouseAppDatabase {
+  // We tell the database where to store the data with this constructor
+  HouseAppDatabase() : super(_openConnection());
+
+  Future<int> insertHouse(House house) => into(houses).insert(house);
+  Future<int> deleteHouse(House house) => delete(houses).delete(house);
+  Future<bool> updateHouse(House house) => update(houses).replace(house);
+  Future<List<House>> getHouseById(int id) =>
+      (select(houses)..where((tbl) => tbl.houseID.equals(id))).get();
+  Future<List<House>> getAllHouses() => select(houses).get();
+  Future<List<House>> getOrderedHouses() => (select(houses)
+        ..orderBy([(Houses t) => OrderingTerm(expression: t.houseID)]))
+      .get();
+  Future<House> getSpecificHouse(int id, int number) => (select(houses)
+        ..where((tbl) => tbl.houseID.equals(id) & tbl.number.equals(number)))
+      .getSingle();
+
+  // You should bump this number whenever you change or add a table definition.
+  @override
+  int get schemaVersion => 1;
 }

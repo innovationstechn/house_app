@@ -3,191 +3,242 @@
 part of 'database.dart';
 
 // **************************************************************************
-// FloorGenerator
+// MoorGenerator
 // **************************************************************************
 
-class $FloorAppDatabase {
-  /// Creates a database builder for a persistent database.
-  /// Once a database is built, you should keep a reference to it and re-use it.
-  static _$AppDatabaseBuilder databaseBuilder(String name) =>
-      _$AppDatabaseBuilder(name);
-
-  /// Creates a database builder for an in memory database.
-  /// Information stored in an in memory database disappears when the process is killed.
-  /// Once a database is built, you should keep a reference to it and re-use it.
-  static _$AppDatabaseBuilder inMemoryDatabaseBuilder() =>
-      _$AppDatabaseBuilder(null);
-}
-
-class _$AppDatabaseBuilder {
-  _$AppDatabaseBuilder(this.name);
-
-  final String? name;
-
-  final List<Migration> _migrations = [];
-
-  Callback? _callback;
-
-  /// Adds migrations to the builder.
-  _$AppDatabaseBuilder addMigrations(List<Migration> migrations) {
-    _migrations.addAll(migrations);
-    return this;
-  }
-
-  /// Adds a database [Callback] to the builder.
-  _$AppDatabaseBuilder addCallback(Callback callback) {
-    _callback = callback;
-    return this;
-  }
-
-  /// Creates the database and initializes it.
-  Future<AppDatabase> build() async {
-    final path = name != null
-        ? await sqfliteDatabaseFactory.getDatabasePath(name!)
-        : ':memory:';
-    final database = _$AppDatabase();
-    database.database = await database.open(
-      path,
-      _migrations,
-      _callback,
+// ignore_for_file: unnecessary_brace_in_string_interps, unnecessary_this
+class House extends DataClass implements Insertable<House> {
+  final int houseID;
+  final int number;
+  final bool visited;
+  House({required this.houseID, required this.number, required this.visited});
+  factory House.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    final boolType = db.typeSystem.forDartType<bool>();
+    return House(
+      houseID:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}house_i_d'])!,
+      number:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}number'])!,
+      visited:
+          boolType.mapFromDatabaseResponse(data['${effectivePrefix}visited'])!,
     );
-    return database;
   }
-}
-
-class _$AppDatabase extends AppDatabase {
-  _$AppDatabase([StreamController<String>? listener]) {
-    changeListener = listener ?? StreamController<String>.broadcast();
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['house_i_d'] = Variable<int>(houseID);
+    map['number'] = Variable<int>(number);
+    map['visited'] = Variable<bool>(visited);
+    return map;
   }
 
-  HouseDAO? _houseProgressDAOInstance;
-
-  Future<sqflite.Database> open(String path, List<Migration> migrations,
-      [Callback? callback]) async {
-    final databaseOptions = sqflite.OpenDatabaseOptions(
-      version: 1,
-      onConfigure: (database) async {
-        await database.execute('PRAGMA foreign_keys = ON');
-      },
-      onOpen: (database) async {
-        await callback?.onOpen?.call(database);
-      },
-      onUpgrade: (database, startVersion, endVersion) async {
-        await MigrationAdapter.runMigrations(
-            database, startVersion, endVersion, migrations);
-
-        await callback?.onUpgrade?.call(database, startVersion, endVersion);
-      },
-      onCreate: (database, version) async {
-        await database.execute(
-            'CREATE TABLE IF NOT EXISTS `HouseModel` (`houseID` INTEGER NOT NULL, `number` INTEGER NOT NULL, `visited` INTEGER NOT NULL, PRIMARY KEY (`houseID`))');
-
-        await callback?.onCreate?.call(database, version);
-      },
+  HousesCompanion toCompanion(bool nullToAbsent) {
+    return HousesCompanion(
+      houseID: Value(houseID),
+      number: Value(number),
+      visited: Value(visited),
     );
-    return sqfliteDatabaseFactory.openDatabase(path, options: databaseOptions);
+  }
+
+  factory House.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return House(
+      houseID: serializer.fromJson<int>(json['houseID']),
+      number: serializer.fromJson<int>(json['number']),
+      visited: serializer.fromJson<bool>(json['visited']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'houseID': serializer.toJson<int>(houseID),
+      'number': serializer.toJson<int>(number),
+      'visited': serializer.toJson<bool>(visited),
+    };
+  }
+
+  House copyWith({int? houseID, int? number, bool? visited}) => House(
+        houseID: houseID ?? this.houseID,
+        number: number ?? this.number,
+        visited: visited ?? this.visited,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('House(')
+          ..write('houseID: $houseID, ')
+          ..write('number: $number, ')
+          ..write('visited: $visited')
+          ..write(')'))
+        .toString();
   }
 
   @override
-  HouseDAO get houseProgressDAO {
-    return _houseProgressDAOInstance ??= _$HouseDAO(database, changeListener);
+  int get hashCode =>
+      $mrjf($mrjc(houseID.hashCode, $mrjc(number.hashCode, visited.hashCode)));
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is House &&
+          other.houseID == this.houseID &&
+          other.number == this.number &&
+          other.visited == this.visited);
+}
+
+class HousesCompanion extends UpdateCompanion<House> {
+  final Value<int> houseID;
+  final Value<int> number;
+  final Value<bool> visited;
+  const HousesCompanion({
+    this.houseID = const Value.absent(),
+    this.number = const Value.absent(),
+    this.visited = const Value.absent(),
+  });
+  HousesCompanion.insert({
+    this.houseID = const Value.absent(),
+    required int number,
+    required bool visited,
+  })   : number = Value(number),
+        visited = Value(visited);
+  static Insertable<House> custom({
+    Expression<int>? houseID,
+    Expression<int>? number,
+    Expression<bool>? visited,
+  }) {
+    return RawValuesInsertable({
+      if (houseID != null) 'house_i_d': houseID,
+      if (number != null) 'number': number,
+      if (visited != null) 'visited': visited,
+    });
+  }
+
+  HousesCompanion copyWith(
+      {Value<int>? houseID, Value<int>? number, Value<bool>? visited}) {
+    return HousesCompanion(
+      houseID: houseID ?? this.houseID,
+      number: number ?? this.number,
+      visited: visited ?? this.visited,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (houseID.present) {
+      map['house_i_d'] = Variable<int>(houseID.value);
+    }
+    if (number.present) {
+      map['number'] = Variable<int>(number.value);
+    }
+    if (visited.present) {
+      map['visited'] = Variable<bool>(visited.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('HousesCompanion(')
+          ..write('houseID: $houseID, ')
+          ..write('number: $number, ')
+          ..write('visited: $visited')
+          ..write(')'))
+        .toString();
   }
 }
 
-class _$HouseDAO extends HouseDAO {
-  _$HouseDAO(this.database, this.changeListener)
-      : _queryAdapter = QueryAdapter(database),
-        _houseModelInsertionAdapter = InsertionAdapter(
-            database,
-            'HouseModel',
-            (HouseModel item) => <String, Object?>{
-                  'houseID': item.houseID,
-                  'number': item.number,
-                  'visited': item.visited ? 1 : 0
-                }),
-        _houseModelUpdateAdapter = UpdateAdapter(
-            database,
-            'HouseModel',
-            ['houseID'],
-            (HouseModel item) => <String, Object?>{
-                  'houseID': item.houseID,
-                  'number': item.number,
-                  'visited': item.visited ? 1 : 0
-                }),
-        _houseModelDeletionAdapter = DeletionAdapter(
-            database,
-            'HouseModel',
-            ['houseID'],
-            (HouseModel item) => <String, Object?>{
-                  'houseID': item.houseID,
-                  'number': item.number,
-                  'visited': item.visited ? 1 : 0
-                });
-
-  final sqflite.DatabaseExecutor database;
-
-  final StreamController<String> changeListener;
-
-  final QueryAdapter _queryAdapter;
-
-  final InsertionAdapter<HouseModel> _houseModelInsertionAdapter;
-
-  final UpdateAdapter<HouseModel> _houseModelUpdateAdapter;
-
-  final DeletionAdapter<HouseModel> _houseModelDeletionAdapter;
-
+class $HousesTable extends Houses with TableInfo<$HousesTable, House> {
+  final GeneratedDatabase _db;
+  final String? _alias;
+  $HousesTable(this._db, [this._alias]);
+  final VerificationMeta _houseIDMeta = const VerificationMeta('houseID');
   @override
-  Future<List<HouseModel>> getAllProgress() async {
-    return _queryAdapter.queryList('SELECT * FROM HouseModel ORDER BY houseID',
-        mapper: (Map<String, Object?> row) => HouseModel(
-            houseID: row['houseID'] as int,
-            number: row['number'] as int,
-            visited: (row['visited'] as int) != 0));
+  late final GeneratedIntColumn houseID = _constructHouseID();
+  GeneratedIntColumn _constructHouseID() {
+    return GeneratedIntColumn(
+      'house_i_d',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _numberMeta = const VerificationMeta('number');
+  @override
+  late final GeneratedIntColumn number = _constructNumber();
+  GeneratedIntColumn _constructNumber() {
+    return GeneratedIntColumn(
+      'number',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _visitedMeta = const VerificationMeta('visited');
+  @override
+  late final GeneratedBoolColumn visited = _constructVisited();
+  GeneratedBoolColumn _constructVisited() {
+    return GeneratedBoolColumn(
+      'visited',
+      $tableName,
+      false,
+    );
   }
 
   @override
-  Future<List<HouseModel>> getAllHouseId() async {
-    return _queryAdapter.queryList('SELECT DISTINCT houseID FROM HouseModel',
-        mapper: (Map<String, Object?> row) => HouseModel(
-            houseID: (row['houseID'] !=null)? row['houseID'] as int:0,
-            number: (row['number'] !=null)? row['number'] as int:0,
-            visited: (row['visited'] as int) != 0));
+  List<GeneratedColumn> get $columns => [houseID, number, visited];
+  @override
+  $HousesTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'houses';
+  @override
+  final String actualTableName = 'houses';
+  @override
+  VerificationContext validateIntegrity(Insertable<House> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('house_i_d')) {
+      context.handle(_houseIDMeta,
+          houseID.isAcceptableOrUnknown(data['house_i_d']!, _houseIDMeta));
+    }
+    if (data.containsKey('number')) {
+      context.handle(_numberMeta,
+          number.isAcceptableOrUnknown(data['number']!, _numberMeta));
+    } else if (isInserting) {
+      context.missing(_numberMeta);
+    }
+    if (data.containsKey('visited')) {
+      context.handle(_visitedMeta,
+          visited.isAcceptableOrUnknown(data['visited']!, _visitedMeta));
+    } else if (isInserting) {
+      context.missing(_visitedMeta);
+    }
+    return context;
   }
 
   @override
-  Future<List<HouseModel>> getHousesById({required int houseID}) async {
-    return _queryAdapter.queryList(
-        'SELECT * FROM HouseModel WHERE houseID = ?1',
-        mapper: (Map<String, Object?> row) => HouseModel(
-            houseID: row['houseID'] as int,
-            number: row['number'] as int,
-            visited: (row['visited'] as int) != 0),
-        arguments: [houseID]);
+  Set<GeneratedColumn> get $primaryKey => {houseID};
+  @override
+  House map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return House.fromData(data, _db, prefix: effectivePrefix);
   }
 
   @override
-  Future<HouseModel?> getHouse({required int houseID,required int number}) async {
-    return _queryAdapter.query(
-        'SELECT * FROM HouseModel WHERE houseID = ?1 AND number = ?2',
-        mapper: (Map<String, Object?> row) => HouseModel(
-            houseID: row['houseID'] as int,
-            number: row['number'] as int,
-            visited: (row['visited'] as int) != 0),
-        arguments: [houseID, number]);
+  $HousesTable createAlias(String alias) {
+    return $HousesTable(_db, alias);
   }
+}
 
+abstract class _$HouseAppDatabase extends GeneratedDatabase {
+  _$HouseAppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
+  late final $HousesTable houses = $HousesTable(this);
   @override
-  Future<void> newProgress(HouseModel person) async {
-    await _houseModelInsertionAdapter.insert(person, OnConflictStrategy.abort);
-  }
-
+  Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
-  Future<void> updateProgress(HouseModel progress) async {
-    await _houseModelUpdateAdapter.update(progress, OnConflictStrategy.abort);
-  }
-
-  @override
-  Future<void> deleteProgress(HouseModel progress) async {
-    await _houseModelDeletionAdapter.delete(progress);
-  }
+  List<DatabaseSchemaEntity> get allSchemaEntities => [houses];
 }
