@@ -1,17 +1,25 @@
+import 'package:floor/floor.dart';
 import 'package:flutter/material.dart';
-
-
-
+import 'package:provider/provider.dart';
 import 'House.dart';
 import 'model/DatabaseHelperModel.dart';
 import 'model/appbar.dart';
 
+
 void main() {
-  runApp(MyApp());
+  runApp(
+      ChangeNotifierProvider<DatabaseHelper>(
+        create: (context)=>DatabaseHelper(),
+        builder: (context, child){
+          return MyApp();
+        }
+      ));
 }
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -36,24 +44,34 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Provider.of<DatabaseHelper>(context,listen:false).initializeDatabases();
+  }
 
   @override
   Widget build(BuildContext context) {
-    DatabaseHelper databaseHelper = new DatabaseHelper();
-    databaseHelper.initializeDatabases();
 
     return Scaffold(
       appBar: StandardAppBar(
         title: "",
       ),
-      body: Center(
-        child: ListView.builder(
-          itemBuilder: (context, position) {
-            return MyHouse(houseId: databaseHelper.mainHouseModelList[position].houseId,houseSubId:databaseHelper.mainHouseModelList[position].list,visited: databaseHelper.mainHouseModelList[position].visited );
+      body: Consumer<DatabaseHelper>(
+        builder: (context,snapshot,child){
+          return Center(
+            child: ListView.builder(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemBuilder: (context, position) {
+                return MyHouse(houseId: snapshot.mainHouseModelList[position].houseId,houseSubId:snapshot.mainHouseModelList[position].list,visited: snapshot.mainHouseModelList[position].visited );
+              },
+              itemCount: snapshot.mainHouseModelList.length,
+            ),
+          );
           },
-          itemCount: databaseHelper.mainHouseModelList.length,
         ),
-      ),
     );
   }
 }

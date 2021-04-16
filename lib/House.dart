@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app1/houseNumberWidget.dart';
 
+import 'database/database.dart';
 import 'model/house_model.dart';
 
 class MyHouse extends StatefulWidget {
@@ -47,7 +48,7 @@ class _House extends State<MyHouse> {
             children: [
               for (int j = i; j < i + 4; j++)
                 HouseNumber(
-                  houseInfo: HouseModel(
+                  houseInfo: House(
                       houseID: widget.houseId,
                       number: widget.houseSubId[j],
                       visited: widget.visited[j]),
@@ -56,7 +57,7 @@ class _House extends State<MyHouse> {
                 ),
               if (i + 5 == widget.houseSubId.length)
                 HouseNumber(
-                  houseInfo: HouseModel(
+                  houseInfo: House(
                       houseID: widget.houseId,
                       number: widget.houseSubId[i + 4],
                       visited: widget.visited[i + 4]),
@@ -65,7 +66,7 @@ class _House extends State<MyHouse> {
                 )
               else
                 HouseNumber(
-                  houseInfo: HouseModel(
+                  houseInfo: House(
                       houseID: widget.houseId,
                       number: widget.houseSubId[i + 4],
                       visited: widget.visited[i + 4]),
@@ -83,7 +84,7 @@ class _House extends State<MyHouse> {
             children: [
               for (int j = i; j < i + remainingLength - 1; j++)
                 HouseNumber(
-                  houseInfo: HouseModel(
+                  houseInfo: House(
                       houseID: widget.houseId,
                       number: widget.houseSubId[j],
                       visited: widget.visited[j]),
@@ -91,7 +92,7 @@ class _House extends State<MyHouse> {
                   arrowDirection: "forward",
                 ),
               HouseNumber(
-                houseInfo:HouseModel(
+                houseInfo:House(
                     houseID: widget.houseId,
                     number: widget.houseSubId[i + remainingLength - 1],
                     visited: widget.visited[i + remainingLength - 1]),
@@ -110,7 +111,7 @@ class _House extends State<MyHouse> {
             children: [
               if (i + 5 != widget.houseSubId.length)
                 HouseNumber(
-                  houseInfo: HouseModel(
+                  houseInfo: House(
                       houseID: widget.houseId,
                       number: widget.houseSubId[i + 4],
                       visited: widget.visited[i + 4]),
@@ -119,7 +120,7 @@ class _House extends State<MyHouse> {
                 )
               else
                 HouseNumber(
-                  houseInfo: HouseModel(
+                  houseInfo: House(
                       houseID: widget.houseId,
                       number: widget.houseSubId[i + 4],
                       visited: widget.visited[i + 4]),
@@ -128,7 +129,7 @@ class _House extends State<MyHouse> {
                 ),
               for (int j = i + 3; j >= i; j--)
                 HouseNumber(
-                  houseInfo: HouseModel(
+                  houseInfo: House(
                       houseID: widget.houseId,
                       number: widget.houseSubId[j],
                       visited: widget.visited[j]),
@@ -146,7 +147,7 @@ class _House extends State<MyHouse> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               HouseNumber(
-                houseInfo: HouseModel(
+                houseInfo: House(
                     houseID: widget.houseId,
                     number: widget.houseSubId[i + remainingLength - 1],
                     visited: widget.visited[i + remainingLength - 1]),
@@ -155,7 +156,7 @@ class _House extends State<MyHouse> {
               ),
               for (int j = i + remainingLength - 2; j >= i; j--)
                 HouseNumber(
-                  houseInfo: HouseModel(
+                  houseInfo: House(
                       houseID: widget.houseId,
                       number: widget.houseSubId[j],
                       visited: widget.visited[j]),
@@ -176,18 +177,11 @@ class _House extends State<MyHouse> {
     return Container(
         child: Card(
       color: Colors.white,
-      child: ListView.builder(
-        itemBuilder: (context, position) {
-          return Container(
-            child: position == 0
-                ? Container(
-                    margin: EdgeInsets.only(bottom: 10),
-                    color: Colors.black12,
-                    child: rows[position])
-                : rows[position],
-          );
-        },
-        itemCount: rows.length,
+      child: Column(
+        children: [
+          for(Row temp in rows)
+            temp
+        ],
       ),
     ));
   }

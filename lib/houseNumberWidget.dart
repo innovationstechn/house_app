@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app1/houseSubCategoryPage.dart';
-import 'package:flutter_app1/model/house_model.dart';
+import 'database/database.dart';
 
 class HouseNumber extends StatefulWidget {
   final String arrowDirection;
   final Color color;
-  final HouseModel houseInfo;
+  final House houseInfo;
 
   HouseNumber(
       {required this.houseInfo,
@@ -52,8 +52,8 @@ class _HouseNumber extends State<HouseNumber> {
                           ))),
                   decoration: new BoxDecoration(
                     color: widget.houseInfo.visited == false
-                        ? Colors.red
-                        : widget.color,
+                        ? widget.color
+                        : Colors.red,
                     shape: BoxShape.circle,
                     border: Border.all(width: 1),
                   )),

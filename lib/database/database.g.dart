@@ -1,4 +1,4 @@
-//GENERATED CODE - DO NOT MODIFY BY HAND
+// GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'database.dart';
 
@@ -99,10 +99,11 @@ class HousesCompanion extends UpdateCompanion<House> {
     this.visited = const Value.absent(),
   });
   HousesCompanion.insert({
-    this.houseID = const Value.absent(),
+    required int houseID,
     required int number,
     required bool visited,
-  })   : number = Value(number),
+  })   : houseID = Value(houseID),
+        number = Value(number),
         visited = Value(visited);
   static Insertable<House> custom({
     Expression<int>? houseID,
@@ -204,6 +205,8 @@ class $HousesTable extends Houses with TableInfo<$HousesTable, House> {
     if (data.containsKey('house_i_d')) {
       context.handle(_houseIDMeta,
           houseID.isAcceptableOrUnknown(data['house_i_d']!, _houseIDMeta));
+    } else if (isInserting) {
+      context.missing(_houseIDMeta);
     }
     if (data.containsKey('number')) {
       context.handle(_numberMeta,
@@ -221,7 +224,7 @@ class $HousesTable extends Houses with TableInfo<$HousesTable, House> {
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {houseID};
+  Set<GeneratedColumn> get $primaryKey => {houseID, number};
   @override
   House map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;

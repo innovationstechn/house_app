@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app1/model/DatabaseHelperModel.dart';
 import 'package:flutter_app1/model/house_model.dart';
+import 'package:provider/provider.dart';
 
+import 'database/database.dart';
 import 'model/appbar.dart';
 
 class HouseSubCategoryPage extends StatefulWidget {
-  final HouseModel houseInfo;
+  final House houseInfo;
 
   HouseSubCategoryPage({required this.houseInfo});
 
@@ -58,7 +61,9 @@ class _HouseSubCategoryPage extends State<HouseSubCategoryPage> {
                         style: ElevatedButton.styleFrom(primary: Colors.blue),
                         child: Text("Ok"),
                         onPressed: () {
-                          //Call Function
+                          // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(widget.houseInfo.visited.toString()),));
+                          Provider.of<DatabaseHelper>(context,listen:false).updateData(House(houseID: widget.houseInfo.houseID,number:widget.houseInfo.number,visited: true));
+                          Navigator.of(context).pop();
                         },
                       ))),
             ),

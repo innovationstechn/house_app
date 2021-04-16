@@ -13,7 +13,7 @@ class Houses extends Table {
 
   // Need to override primary key method to declare custom primary keys.
   @override
-  Set<Column> get primaryKey => {houseID};
+  Set<Column> get primaryKey => {houseID,number};
 }
 
 LazyDatabase _openConnection() {
