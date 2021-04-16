@@ -13,7 +13,7 @@ class Houses extends Table {
 
   // Need to override primary key method to declare custom primary keys.
   @override
-  Set<Column> get primaryKey => {houseID,number};
+  Set<Column> get primaryKey => {houseID, number};
 }
 
 LazyDatabase _openConnection() {
@@ -36,9 +36,18 @@ class HouseAppDatabase extends _$HouseAppDatabase {
   Future<int> insertHouse(House house) => into(houses).insert(house);
   Future<int> deleteHouse(House house) => delete(houses).delete(house);
   Future<bool> updateHouse(House house) => update(houses).replace(house);
+
   Future<List<House>> getHouseById(int id) =>
       (select(houses)..where((tbl) => tbl.houseID.equals(id))).get();
   Future<List<House>> getAllHouses() => select(houses).get();
+
+  Future<List<int?>> getDistinctHouses() {
+    final query = selectOnly(houses, distinct: true)
+      ..addColumns([houses.houseID]);
+    return query.map((row) => row.read(houses.houseID)).get();
+  }
+
+  Stream<List<House>> allHousesStream() => select(houses).watch();
   Future<List<House>> getOrderedHouses() => (select(houses)
         ..orderBy([(Houses t) => OrderingTerm(expression: t.houseID)]))
       .get();
