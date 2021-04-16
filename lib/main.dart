@@ -37,37 +37,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
 
-  List<int> list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
-  int houseId = 0;
-  List<bool> visited = [
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-    true
-  ];
-
-
   @override
   Widget build(BuildContext context) {
     DatabaseHelper databaseHelper = new DatabaseHelper();
@@ -78,10 +47,11 @@ class _MyHomePageState extends State<MyHomePage> {
         title: "",
       ),
       body: Center(
-        child: House(
-          visited: this.visited,
-          houseId: this.houseId,
-          houseSubId: this.list,
+        child: ListView.builder(
+          itemBuilder: (context, position) {
+            return MyHouse(houseId: databaseHelper.mainHouseModelList[position].houseId,houseSubId:databaseHelper.mainHouseModelList[position].list,visited: databaseHelper.mainHouseModelList[position].visited );
+          },
+          itemCount: databaseHelper.mainHouseModelList.length,
         ),
       ),
     );

@@ -4,19 +4,19 @@ import 'package:flutter_app1/houseNumberWidget.dart';
 
 import 'model/house_model.dart';
 
-class House extends StatefulWidget {
+class MyHouse extends StatefulWidget {
   final int houseId;
   final List<int> houseSubId;
   final List<bool> visited;
 
-  House(
+  MyHouse(
       {required this.houseId, required this.houseSubId, required this.visited});
 
   @override
   _House createState() => _House();
 }
 
-class _House extends State<House> {
+class _House extends State<MyHouse> {
   bool isForward = false;
   List<Row> rows = [];
   Column column = Column();

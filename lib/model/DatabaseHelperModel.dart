@@ -1,88 +1,58 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter_app1/database/database.dart';
-// import 'package:flutter_app1/model/MainHouseModel.dart';
-// import 'package:flutter_app1/model/house_model.dart';
+import 'package:flutter_app1/database/database.dart';
+import 'package:flutter_app1/model/MainHouseModel.dart';
 
-// class DatabaseHelper {
 
-//   List<MainHouseModel> mainHouseModelList =[];
+class DatabaseHelper {
 
-//   void initializeDatabases() async {
+  List<MainHouseModel> mainHouseModelList = [];
 
-//     final database = await $FloorAppDatabase.databaseBuilder('app_database.db').build();
 
-//     database.houseProgressDAO.getAllHouseId().then((value) => {
+  void initializeDatabases() async {
 
-//       if(value.length>0)
-//         loadData(value)
-//       else {
+    HouseAppDatabase().getOrderedHouses().then((value) => {
 
-//         insertData(),
-//         database.houseProgressDAO.getAllHouseId().then((value) => {
-//         loadData(value)
-//         }),
-//       }
+      if(value.length>0){
+        loadData(value),
+      }
+      else
+      {
+          insertData(),
+          HouseAppDatabase().getOrderedHouses().then((result) => {
+            loadData(result),
+          }),
+      }
+    });
+  }
 
-//     });
-//   }
+  void loadData(List<House>value) {
 
-//   void loadData(List<HouseModel>value) async {
+    mainHouseModelList.clear();
+    int id=1;
+    MainHouseModel mainHouseModel= new MainHouseModel();
 
-//     mainHouseModelList.clear();
+    for(var house in value){
 
-//     final database = await $FloorAppDatabase.databaseBuilder('app_database.db').build();
-//     MainHouseModel mainHouseModel;
+      if(house.houseID != id){
+        mainHouseModel.houseId = id;
+        id = house.houseID;
+        mainHouseModelList.add(mainHouseModel);
+        mainHouseModel = MainHouseModel();
+      }
 
-//     for(var house in value){
-//       database.houseProgressDAO.getHousesById(houseID:house.houseID).then((result) => {
+      mainHouseModel.list.add(house.number);
+      mainHouseModel.visited.add(house.visited);
 
-//         mainHouseModel = new MainHouseModel(),
-//         mainHouseModel.houseId = house.houseID,
+    }
 
-//         for(var temp in result){
-//           mainHouseModel.list.add(temp.number),
-//           mainHouseModel.visited.add(temp.visited),
-//         },
-//         mainHouseModelList.add(mainHouseModel),
-//       });
-//     }
-//   }
+  }
 
-//   static insertData() async {
-//     final database = HouseAppDatabase();
 
-//         for(int i=0;i<5;i++){
-//           for(int j=0;j<15;j++) {
+  void insertData() {
+    for(int i=0;i<5;i++){
+      for(int j=0;j<15-i;j++)
+        HouseAppDatabase().insertHouse(House(houseID: i+1,number: j+1,visited: false));
+    }
+  }
 
-//             House house = new House(
-//                 houseID: i + 1, number: j + 1, visited: false);
-//             database.insertHouse(house);
 
-//           }
-//         }
-//       }
-
-//       void updateData(HouseModel houseModel) async {
-//         final database = await $FloorAppDatabase.databaseBuilder('app_database.db').build();
-//         database.houseProgressDAO.updateProgress(houseModel);
-//       }
-
-//       void restartData() async{
-//         final database = await $FloorAppDatabase.databaseBuilder('app_database.db').build();
-
-//         for(int i=0;i<5;i++){
-//           for(int j=0;j<15;j++) {
-//             HouseModel houseModel = new HouseModel(
-//                 houseID: i + 1, number: j + 1, visited: false);
-//             database.houseProgressDAO.updateProgress(houseModel);
-//           }
-//         }
-
-//         database.houseProgressDAO.getAllHouseId().then((value) => {
-//           loadData(value)
-//         });
-//       }
-
-//     }
-
-//     class $HouseAppDatabase}
+}
