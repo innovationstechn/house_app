@@ -1,9 +1,9 @@
 import 'package:floor/floor.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'House.dart';
-import 'model/DatabaseHelperModel.dart';
-import 'model/appbar.dart';
+import 'screen/House.dart';
+import 'model/database_helper_model.dart';
+import 'appbar/appbar.dart';
 
 void main() {
   runApp(ChangeNotifierProvider<DatabaseHelper>(
@@ -42,7 +42,6 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Provider.of<DatabaseHelper>(context, listen: false).initializeDatabases();
   }
 
   @override
@@ -53,12 +52,13 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Consumer<DatabaseHelper>(
         builder: (context, snapshot, child) {
+          print("hello");
           return Center(
             child: ListView.builder(
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
               itemBuilder: (context, position) {
-                return MyHouse(
+                return new MyHouse(
                     houseId: snapshot.mainHouseModelList[position].houseId,
                     houseSubId: snapshot.mainHouseModelList[position].list,
                     visited: snapshot.mainHouseModelList[position].visited);

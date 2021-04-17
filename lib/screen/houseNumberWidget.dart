@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app1/houseSubCategoryPage.dart';
-import 'database/database.dart';
+import 'package:flutter_app1/screen/houseSubCategoryPage.dart';
+import '../database/database.dart';
 
+// This class helps in making the customize number with arrow for making rows.
 class HouseNumber extends StatefulWidget {
   final String arrowDirection;
   final Color color;
@@ -17,6 +18,7 @@ class HouseNumber extends StatefulWidget {
   _HouseNumber createState() => _HouseNumber();
 }
 
+// Creating customize number with arrow for making rows.
 class _HouseNumber extends State<HouseNumber> {
   @override
   Widget build(BuildContext context) {

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_app1/model/database_helper_model.dart';
 
 class StandardAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   StandardAppBar({required this.title});
-
 
   @override
   Widget build(BuildContext context) {
@@ -11,18 +12,24 @@ class StandardAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: Colors.white,
       actions: [
         IconButton(
-            icon: Icon(Icons.calendar_today_outlined, color: Colors.black),
+            icon: Icon(Icons.refresh, color: Colors.red),
             onPressed: () {
               showDialog(
                   context: context,
                   builder: (_) => AlertDialog(
-                    title: Text('Dialog Title'),
+                    title: Text('Look at houses again'),
                     content: Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            ElevatedButton(onPressed: (){}, child: Text("cancel")),
-                            ElevatedButton(onPressed: (){}, child: Text("Restart")),
+                            ElevatedButton(onPressed: (){Navigator.of(context).pop();}, child: Text("cancel")),
+                            SizedBox(width: 20,),
+                            ElevatedButton(onPressed: (){
+                              Provider.of<DatabaseHelper>(context,listen:false).updateAll();
+                              Navigator.of(context).pop();
+                            }, child: Text("Restart")),
                           ],
                       )],
                     ),

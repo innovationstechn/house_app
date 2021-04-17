@@ -37,6 +37,7 @@ class HouseAppDatabase extends _$HouseAppDatabase {
   Future<int> deleteHouse(House house) => delete(houses).delete(house);
   Future<bool> updateHouse(House house) => update(houses).replace(house);
 
+
   Future<List<House>> getHouseById(int id) =>
       (select(houses)..where((tbl) => tbl.houseID.equals(id))).get();
   Future<List<House>> getAllHouses() => select(houses).get();
@@ -51,9 +52,9 @@ class HouseAppDatabase extends _$HouseAppDatabase {
   Future<List<House>> getOrderedHouses() => (select(houses)
         ..orderBy([(Houses t) => OrderingTerm(expression: t.houseID)]))
       .get();
-  Future<House> getSpecificHouse(int id, int number) => (select(houses)
-        ..where((tbl) => tbl.houseID.equals(id) & tbl.number.equals(number)))
-      .getSingle();
+  Future<List<House>> checkAllVisited(bool visited) => (select(houses)
+        ..where((tbl) => tbl.visited.equals(visited)))
+      .get();
 
   // You should bump this number whenever you change or add a table definition.
   @override

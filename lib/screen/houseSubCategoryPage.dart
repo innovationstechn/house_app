@@ -1,11 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app1/model/DatabaseHelperModel.dart';
-import 'package:flutter_app1/model/house_model.dart';
+import 'package:flutter_app1/model/database_helper_model.dart';
 import 'package:provider/provider.dart';
-
-import 'database/database.dart';
-import 'model/appbar.dart';
+import '../database/database.dart';
+import '../appbar/appbar.dart';
 
 class HouseSubCategoryPage extends StatefulWidget {
   final House houseInfo;
@@ -20,6 +18,8 @@ class HouseSubCategoryPage extends StatefulWidget {
 }
 
 class _HouseSubCategoryPage extends State<HouseSubCategoryPage> {
+
+  // Creating List of house cards
   List<_DummyCard> items = [
     _DummyCard(no: "1"),
     _DummyCard(no: "2"),
@@ -56,14 +56,45 @@ class _HouseSubCategoryPage extends State<HouseSubCategoryPage> {
               child: Align(
                   alignment: Alignment.bottomRight,
                   child: Container(
-                      margin: EdgeInsets.only(right: 10),
+                      margin: EdgeInsets.all(10),
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(primary: Colors.blue),
                         child: Text("Ok"),
                         onPressed: () {
-                          // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(widget.houseInfo.visited.toString()),));
-                          Provider.of<DatabaseHelper>(context,listen:false).updateData(House(houseID: widget.houseInfo.houseID,number:widget.houseInfo.number,visited: true));
-                          Navigator.of(context).pop();
+                          // Updating House
+                          Provider.of<DatabaseHelper>(context,listen:false).updateData(House(houseID: widget.houseInfo.houseID,number:widget.houseInfo.number,visited: true),context);
+                          // Check all visited and show dialog on it.
+                          Provider.of<DatabaseHelper>(context,listen:false).checkAllVisited().then((value) {
+                            if(value){
+                              showDialog(context: context,
+                                  builder: (_) => AlertDialog(
+                                    title: Text('House No 5'),
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text("You looked at 11 houses"),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          children: [
+                                            ElevatedButton(onPressed: (){
+                                              //Closing dialog and activity
+                                              Navigator.of(context, rootNavigator: true).pop();
+                                              Navigator.of(context).pop();}, child: Text("cancel")),
+                                            SizedBox(width: 20,),
+                                            ElevatedButton(onPressed: (){
+                                              //Closing dialog and activity
+                                              Provider.of<DatabaseHelper>(context,listen:false).updateAll();
+                                              Navigator.of(context, rootNavigator: true).pop();
+                                              Navigator.of(context).pop();
+                                            }, child: Text("Restart")),
+                                          ],)
+                                      ],
+                                    ),
+                                  ));
+                            }
+                            else
+                              Navigator.of(context).pop();
+                          });
                         },
                       ))),
             ),
@@ -74,6 +105,7 @@ class _HouseSubCategoryPage extends State<HouseSubCategoryPage> {
   }
 }
 
+// Creating card for second activity
 class _DummyCard extends StatelessWidget {
   final String no;
 
