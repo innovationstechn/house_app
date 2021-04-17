@@ -39,7 +39,7 @@ class StandardAppBar extends StatelessWidget implements PreferredSizeWidget {
         IconButton(
             icon: Icon(Icons.more_vert, color: Colors.black), onPressed: () {})
       ],
-      title: Text(this.title),
+      title: Text(this.title,style: TextStyle(fontSize: 20,color: Colors.black,fontWeight: FontWeight.bold),),
       leading: IconButton(
         icon: Icon(Icons.menu, color: Colors.black),
         onPressed: () {},

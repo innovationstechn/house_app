@@ -33,7 +33,7 @@ class _HouseSubCategoryPage extends State<HouseSubCategoryPage> {
     // TODO: implement build
     return Scaffold(
       appBar: StandardAppBar(
-        title: "House No " + widget.houseInfo.houseID.toString(),
+        title: "House " + widget.houseInfo.houseID.toString(),
       ),
       body: Column(
         children: [
