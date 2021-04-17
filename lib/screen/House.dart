@@ -25,6 +25,160 @@ class _House extends State<MyHouse> {
   List<Row> rows = [];
   Column column = Column();
 
+  void loadForward(int i){
+
+    if (widget.houseSubId.length - i >= 5) {
+      Row row = Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          for (int j = i; j < i + 4; j++)
+            HouseNumber(
+              houseInfo: House(
+                  houseID: widget.houseId,
+                  number: widget.houseSubId[j],
+                  visited: widget.visited[j]),
+              color: Colors.green,
+              arrowDirection: "forward",
+            ),
+          if (i + 5 == widget.houseSubId.length)
+          // If it is last element then no arrow will assign to it
+            HouseNumber(
+              houseInfo: House(
+                  houseID: widget.houseId,
+                  number: widget.houseSubId[i + 4],
+                  visited: widget.visited[i + 4]),
+              color: Colors.green,
+              arrowDirection: "",
+            )
+          else
+          // Assign downward arrow to last element
+            HouseNumber(
+              houseInfo: House(
+                  houseID: widget.houseId,
+                  number: widget.houseSubId[i + 4],
+                  visited: widget.visited[i + 4]),
+              color: Colors.green,
+              arrowDirection: "downward",
+            ),
+        ],
+      );
+      // column.children.add(row);
+      rows.add(row);
+    } else {
+      // For making row with backward arrow
+      int remainingLength = widget.houseSubId.length - i;
+      Row row = Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          SizedBox(width: 8,),
+          for (int j = i; j < i + remainingLength - 1; j++)
+            HouseNumber(
+              houseInfo: House(
+                  houseID: widget.houseId,
+                  number: widget.houseSubId[j],
+                  visited: widget.visited[j]),
+              color: Colors.green,
+              arrowDirection: "forward",
+            ),
+          HouseNumber(
+            houseInfo:House(
+                houseID: widget.houseId,
+                number: widget.houseSubId[i + remainingLength - 1],
+                visited: widget.visited[i + remainingLength - 1]),
+            color: Colors.green,
+            arrowDirection: "",
+          ),
+        ],
+      );
+      // column.children.add(row);
+      rows.add(row);
+    }
+
+  }
+
+
+  void loadBackward(int i){
+
+    if (widget.houseSubId.length - i >= 5) {
+      Row row = Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          if (i + 5 != widget.houseSubId.length)
+            HouseNumber(
+              houseInfo: House(
+                  houseID: widget.houseId,
+                  number: widget.houseSubId[i + 4],
+                  visited: widget.visited[i + 4]),
+              color: Colors.green,
+              arrowDirection: "downward",
+            )
+          else
+            HouseNumber(
+              houseInfo: House(
+                  houseID: widget.houseId,
+                  number: widget.houseSubId[i + 4],
+                  visited: widget.visited[i + 4]),
+              color: Colors.green,
+              arrowDirection: "",
+            ),
+          for (int j = i + 3; j >= i; j--)
+            HouseNumber(
+              houseInfo: House(
+                  houseID: widget.houseId,
+                  number: widget.houseSubId[j],
+                  visited: widget.visited[j]),
+              color: Colors.green,
+              arrowDirection: "backward",
+            ),
+        ],
+      );
+      // column.children.add(row);
+      rows.add(row);
+    } else {
+      int remainingLength = widget.houseSubId.length - i;
+
+      Row row = Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          HouseNumber(
+            houseInfo: House(
+                houseID: widget.houseId,
+                number: widget.houseSubId[i + remainingLength - 1],
+                visited: widget.visited[i + remainingLength - 1]),
+            color: Colors.green,
+            arrowDirection: "",
+          ),
+          for (int j = i + remainingLength - 2; j >= i; j--)
+          // j==i?Container(
+          //   margin: EdgeInsets.only(left: 10),
+          //   child: HouseNumber(
+          //     houseInfo: House(
+          //         houseID: widget.houseId,
+          //         number: widget.houseSubId[j],
+          //         visited: widget.visited[j]),
+          //     color: Colors.green,
+          //     arrowDirection: "backward",
+          //   ),
+          // ):
+            HouseNumber(
+              houseInfo: House(
+                  houseID: widget.houseId,
+                  number: widget.houseSubId[j],
+                  visited: widget.visited[j]),
+              color: Colors.green,
+              arrowDirection: "backward",
+            ),
+        ],
+      );
+      // column.children.add(row);
+      rows.add(row);
+    }
+
+
+  }
+
+
+
   @override
   void initState() {
     // TODO: implement initState
@@ -57,147 +211,10 @@ class _House extends State<MyHouse> {
       isForward = !isForward;
       // For making row using forward arrow
       if (isForward) {
-        if (widget.houseSubId.length - i >= 5) {
-          Row row = Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              for (int j = i; j < i + 4; j++)
-                HouseNumber(
-                  houseInfo: House(
-                      houseID: widget.houseId,
-                      number: widget.houseSubId[j],
-                      visited: widget.visited[j]),
-                  color: Colors.green,
-                  arrowDirection: "forward",
-                ),
-              if (i + 5 == widget.houseSubId.length)
-                // If it is last element then no arrow will assign to it
-                HouseNumber(
-                  houseInfo: House(
-                      houseID: widget.houseId,
-                      number: widget.houseSubId[i + 4],
-                      visited: widget.visited[i + 4]),
-                  color: Colors.green,
-                  arrowDirection: "",
-                )
-              else
-              // Assign downward arrow to last element
-                HouseNumber(
-                  houseInfo: House(
-                      houseID: widget.houseId,
-                      number: widget.houseSubId[i + 4],
-                      visited: widget.visited[i + 4]),
-                  color: Colors.green,
-                  arrowDirection: "downward",
-                ),
-            ],
-          );
-          // column.children.add(row);
-          rows.add(row);
-        } else {
-          // For making row with backward arrow
-          int remainingLength = widget.houseSubId.length - i;
-          Row row = Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              SizedBox(width: 8,),
-              for (int j = i; j < i + remainingLength - 1; j++)
-                HouseNumber(
-                  houseInfo: House(
-                      houseID: widget.houseId,
-                      number: widget.houseSubId[j],
-                      visited: widget.visited[j]),
-                  color: Colors.green,
-                  arrowDirection: "forward",
-                ),
-              HouseNumber(
-                houseInfo:House(
-                    houseID: widget.houseId,
-                    number: widget.houseSubId[i + remainingLength - 1],
-                    visited: widget.visited[i + remainingLength - 1]),
-                color: Colors.green,
-                arrowDirection: "",
-              ),
-            ],
-          );
-          // column.children.add(row);
-          rows.add(row);
-        }
+        loadForward(i);
       } else {
-        if (widget.houseSubId.length - i >= 5) {
-          Row row = Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              if (i + 5 != widget.houseSubId.length)
-                HouseNumber(
-                  houseInfo: House(
-                      houseID: widget.houseId,
-                      number: widget.houseSubId[i + 4],
-                      visited: widget.visited[i + 4]),
-                  color: Colors.green,
-                  arrowDirection: "downward",
-                )
-              else
-                HouseNumber(
-                  houseInfo: House(
-                      houseID: widget.houseId,
-                      number: widget.houseSubId[i + 4],
-                      visited: widget.visited[i + 4]),
-                  color: Colors.green,
-                  arrowDirection: "",
-                ),
-              for (int j = i + 3; j >= i; j--)
-                HouseNumber(
-                  houseInfo: House(
-                      houseID: widget.houseId,
-                      number: widget.houseSubId[j],
-                      visited: widget.visited[j]),
-                  color: Colors.green,
-                  arrowDirection: "backward",
-                ),
-            ],
-          );
-          // column.children.add(row);
-          rows.add(row);
-        } else {
-          int remainingLength = widget.houseSubId.length - i;
-
-          Row row = Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              HouseNumber(
-                houseInfo: House(
-                    houseID: widget.houseId,
-                    number: widget.houseSubId[i + remainingLength - 1],
-                    visited: widget.visited[i + remainingLength - 1]),
-                color: Colors.green,
-                arrowDirection: "",
-              ),
-              for (int j = i + remainingLength - 2; j >= i; j--)
-                // j==i?Container(
-                //   margin: EdgeInsets.only(left: 10),
-                //   child: HouseNumber(
-                //     houseInfo: House(
-                //         houseID: widget.houseId,
-                //         number: widget.houseSubId[j],
-                //         visited: widget.visited[j]),
-                //     color: Colors.green,
-                //     arrowDirection: "backward",
-                //   ),
-                // ):
-                HouseNumber(
-                  houseInfo: House(
-                  houseID: widget.houseId,
-                  number: widget.houseSubId[j],
-                  visited: widget.visited[j]),
-                  color: Colors.green,
-                  arrowDirection: "backward",
-                  ),
-            ],
-          );
-          // column.children.add(row);
-          rows.add(row);
-        }
+        //Making row using backward arrow
+        loadBackward(i);
       }
     }
 
