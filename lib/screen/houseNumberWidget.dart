@@ -24,14 +24,14 @@ class _HouseNumber extends State<HouseNumber> {
   Widget build(BuildContext context) {
     return Container(
       height: 70,
-      width: widget.arrowDirection == "downward" ? 40 : 70,
+      width:  widget.arrowDirection == "downward" || widget.arrowDirection =="" ? 40 : 70,
       child: Column(
         children: [
           Row(
             children: [
               widget.arrowDirection == "backward"
-                  ? Icon(IconData(0xe5a7,
-                      fontFamily: 'MaterialIcons', matchTextDirection: true))
+                  ? const Icon(IconData(0xe5a7,
+                      fontFamily: 'MaterialIcons', matchTextDirection: true,),size: 20.0)
                   : SizedBox(
                       width: 0,
                       height: 0,
@@ -50,7 +50,7 @@ class _HouseNumber extends State<HouseNumber> {
                           },
                           child: Text(
                             widget.houseInfo.number.toString(),
-                            style: TextStyle(fontSize: 30, color: Colors.white),
+                            style: TextStyle(fontSize: 20, color: Colors.white),
                           ))),
                   decoration: new BoxDecoration(
                     color: widget.houseInfo.visited == false
@@ -60,8 +60,8 @@ class _HouseNumber extends State<HouseNumber> {
                     border: Border.all(width: 1),
                   )),
               widget.arrowDirection == "forward"
-                  ? Icon(IconData(58799,
-                      fontFamily: 'MaterialIcons', matchTextDirection: true))
+                  ? const Icon(IconData(58799,
+                      fontFamily: 'MaterialIcons', matchTextDirection: true),size: 20.0)
                   : SizedBox(
                       width: 0,
                       height: 0,
@@ -69,8 +69,8 @@ class _HouseNumber extends State<HouseNumber> {
             ],
           ),
           widget.arrowDirection == "downward"
-              ? Icon(IconData(58795,
-                  fontFamily: 'MaterialIcons', matchTextDirection: true))
+              ? const Icon(IconData(58795,
+                  fontFamily: 'MaterialIcons', matchTextDirection: true),size: 20.0)
               : SizedBox(
                   width: 0,
                   height: 0,

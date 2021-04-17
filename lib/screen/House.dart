@@ -100,7 +100,7 @@ class _House extends State<MyHouse> {
           Row row = Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              SizedBox(width: 13,),
+              SizedBox(width: 8,),
               for (int j = i; j < i + remainingLength - 1; j++)
                 HouseNumber(
                   houseInfo: House(
@@ -174,17 +174,18 @@ class _House extends State<MyHouse> {
                 arrowDirection: "",
               ),
               for (int j = i + remainingLength - 2; j >= i; j--)
-                j==i?Padding(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: HouseNumber(
-                    houseInfo: House(
-                        houseID: widget.houseId,
-                        number: widget.houseSubId[j],
-                        visited: widget.visited[j]),
-                    color: Colors.green,
-                    arrowDirection: "backward",
-                  ),
-                ):HouseNumber(
+                // j==i?Container(
+                //   margin: EdgeInsets.only(left: 10),
+                //   child: HouseNumber(
+                //     houseInfo: House(
+                //         houseID: widget.houseId,
+                //         number: widget.houseSubId[j],
+                //         visited: widget.visited[j]),
+                //     color: Colors.green,
+                //     arrowDirection: "backward",
+                //   ),
+                // ):
+                HouseNumber(
                   houseInfo: House(
                   houseID: widget.houseId,
                   number: widget.houseSubId[j],
