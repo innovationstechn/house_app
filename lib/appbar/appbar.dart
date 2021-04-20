@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:house_app/model/database_helper_model.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_app1/model/database_helper_model.dart';
+
 
 class StandardAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;

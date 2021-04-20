@@ -1,11 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app1/screen/houseNumberWidget.dart';
-import 'package:provider/provider.dart';
-
 import '../database/database.dart';
-import '../model/database_helper_model.dart';
-import '../model/house_model.dart';
+import 'houseNumberWidget.dart';
 
 // This class used for making card of house and its Sub houses.
 class MyHouse extends StatefulWidget {
@@ -104,13 +100,15 @@ class _House extends State<MyHouse> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           if (i + 5 != widget.houseSubId.length)
-            HouseNumber(
-              houseInfo: House(
-                  houseID: widget.houseId,
-                  number: widget.houseSubId[i + 4],
-                  visited: widget.visited[i + 4]),
-              color: Colors.green,
-              arrowDirection: "downward",
+            Container(
+              child: HouseNumber(
+                houseInfo: House(
+                    houseID: widget.houseId,
+                    number: widget.houseSubId[i + 4],
+                    visited: widget.visited[i + 4]),
+                color: Colors.green,
+                arrowDirection: "downward",
+              ),
             )
           else
             HouseNumber(
@@ -123,13 +121,13 @@ class _House extends State<MyHouse> {
             ),
           for (int j = i + 3; j >= i; j--)
             HouseNumber(
-              houseInfo: House(
-                  houseID: widget.houseId,
-                  number: widget.houseSubId[j],
-                  visited: widget.visited[j]),
-              color: Colors.green,
-              arrowDirection: "backward",
-            ),
+             houseInfo: House(
+                 houseID: widget.houseId,
+                 number: widget.houseSubId[j],
+                 visited: widget.visited[j]),
+             color: Colors.green,
+             arrowDirection: "backward",
+           ),
         ],
       );
       // column.children.add(row);

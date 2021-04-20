@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app1/model/database_helper_model.dart';
+import 'package:house_app/model/database_helper_model.dart';
 import 'package:provider/provider.dart';
 import '../database/database.dart';
 import '../appbar/appbar.dart';

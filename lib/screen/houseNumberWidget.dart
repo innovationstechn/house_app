@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app1/screen/houseSubCategoryPage.dart';
+import 'package:house_app/screen/houseSubCategoryPage.dart';
 import '../database/database.dart';
 
 // This class helps in making the customize number with arrow for making rows.
@@ -36,29 +36,30 @@ class _HouseNumber extends State<HouseNumber> {
                       width: 0,
                       height: 0,
                     ),
-              Container(
-                  height: 40,
-                  width: 40,
-                  child: Center(
-                      child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => HouseSubCategoryPage(
-                                        houseInfo: widget.houseInfo)));
-                          },
-                          child: Text(
-                            widget.houseInfo.number.toString(),
-                            style: TextStyle(fontSize: 20, color: Colors.white),
-                          ))),
-                  decoration: new BoxDecoration(
-                    color: widget.houseInfo.visited == false
-                        ? widget.color
-                        : Colors.red,
-                    shape: BoxShape.circle,
-                    border: Border.all(width: 1),
-                  )),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => HouseSubCategoryPage(
+                              houseInfo: widget.houseInfo)));
+                },
+                child: Container(
+                    height: 40,
+                    width: 40,
+                    child: Center(
+                        child: Text(
+                          widget.houseInfo.number.toString(),
+                          style: TextStyle(fontSize: 20, color: Colors.white),
+                        )),
+                    decoration: new BoxDecoration(
+                      color: widget.houseInfo.visited == false
+                          ? widget.color
+                          : Colors.red,
+                      shape: BoxShape.circle,
+                      border: Border.all(width: 1),
+                    )),
+              ),
               widget.arrowDirection == "forward"
                   ? const Icon(IconData(58799,
                       fontFamily: 'MaterialIcons', matchTextDirection: true),size: 20.0)

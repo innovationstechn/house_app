@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app1/database/database.dart';
-import 'package:flutter_app1/model/MainHouseModel.dart';
+import 'package:house_app/database/database.dart';
+import 'package:house_app/model/MainHouseModel.dart';
 
 class DatabaseHelper extends ChangeNotifier {
   List<MainHouseModel> _mainHouseModelList = [];
