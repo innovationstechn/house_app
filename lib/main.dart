@@ -45,6 +45,54 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+
+    // Check all visited and show dialog on it.
+    Provider.of<DatabaseHelper>(context,listen:false).checkAllVisited().then((value) {
+      if(value){
+        showDialog(context: context,
+            builder: (_) => AlertDialog(
+              title: Text('House No 5'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text("You looked at 11 houses"),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      ElevatedButton(onPressed: (){
+                        //Closing dialog and activity
+                        Navigator.of(context, rootNavigator: true).pop();
+                        Navigator.of(context).pop();}, child: Text("cancel")),
+                      SizedBox(width: 20,),
+                      ElevatedButton(onPressed: (){
+                        //Closing dialog and activity
+                        Provider.of<DatabaseHelper>(context,listen:false).updateAll();
+                        Navigator.of(context, rootNavigator: true).pop();
+                        Navigator.of(context).pop();
+                      }, child: Text("Restart")),
+                    ],)
+                ],
+              ),
+            ));
+      }
+      else {
+
+        if(Provider.of<DatabaseHelper>(context,listen: false).dialogOpen==true){
+          Provider.of<DatabaseHelper>(context,listen: false).dialogOpen = false;
+          showDialog(context: context,
+              builder: (_) => AlertDialog(
+                title: Text("House No "+Provider.of<DatabaseHelper>(context,listen: false).houseInfo.houseID.toString()),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text("You looked at "+Provider.of<DatabaseHelper>(context,listen: false).houseInfo.number.toString()),
+                   ],
+                ),
+              ));
+        }
+      }
+    });
+
     return Scaffold(
       appBar: StandardAppBar(
         title: "",

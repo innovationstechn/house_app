@@ -10,6 +10,8 @@ class DatabaseHelper extends ChangeNotifier {
 
   List<MainHouseModel> get mainHouseModelList => _mainHouseModelList;
   HouseAppDatabase database = new HouseAppDatabase();
+  bool dialogOpen = false;
+  House houseInfo = House(houseID: 0,number: 0,visited: false);
 
   DatabaseHelper() {
 
@@ -89,7 +91,7 @@ class DatabaseHelper extends ChangeNotifier {
   }
 
   // Update house
-  Future updateData(House house,BuildContext context) async {
+  Future updateData(House house) async {
     database.updateHouse(house);
     loadData();
   }

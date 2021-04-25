@@ -62,40 +62,14 @@ class _HouseSubCategoryPage extends State<HouseSubCategoryPage> {
                         child: Text("Ok"),
                         onPressed: () {
                           // Updating House
-                          Provider.of<DatabaseHelper>(context,listen:false).updateData(House(houseID: widget.houseInfo.houseID,number:widget.houseInfo.number,visited: true),context);
-                          // Check all visited and show dialog on it.
-                          Provider.of<DatabaseHelper>(context,listen:false).checkAllVisited().then((value) {
-                            if(value){
-                              showDialog(context: context,
-                                  builder: (_) => AlertDialog(
-                                    title: Text('House No 5'),
-                                    content: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Text("You looked at 11 houses"),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.end,
-                                          children: [
-                                            ElevatedButton(onPressed: (){
-                                              //Closing dialog and activity
-                                              Navigator.of(context, rootNavigator: true).pop();
-                                              Navigator.of(context).pop();}, child: Text("cancel")),
-                                            SizedBox(width: 20,),
-                                            ElevatedButton(onPressed: (){
-                                              //Closing dialog and activity
-                                              Provider.of<DatabaseHelper>(context,listen:false).updateAll();
-                                              Navigator.of(context, rootNavigator: true).pop();
-                                              Navigator.of(context).pop();
-                                            }, child: Text("Restart")),
-                                          ],)
-                                      ],
-                                    ),
-                                  ));
-                            }
-                            else
-                              Navigator.of(context).pop();
-                          });
-                        },
+                          Provider.of<DatabaseHelper>(context,listen:false).updateData(House(houseID: widget.houseInfo.houseID,number:widget.houseInfo.number,visited: true));
+
+                          // Here we have to check whether selected house are all visited or not. If visited then fetch the greatest house no (House object)
+                          // and assign it to database helper model. And then also true the dialogOpen variable in database helper model.
+
+                          Navigator.pop(context);
+
+                          },
                       ))),
             ),
           )

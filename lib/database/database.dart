@@ -56,6 +56,8 @@ class HouseAppDatabase extends _$HouseAppDatabase {
         ..where((tbl) => tbl.visited.equals(visited)))
       .get();
 
+
+
   // You should bump this number whenever you change or add a table definition.
   @override
   int get schemaVersion => 1;
