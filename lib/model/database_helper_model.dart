@@ -100,4 +100,13 @@ class DatabaseHelper extends ChangeNotifier {
   Future<bool> checkAllVisited() async {
     return (await database.checkAllVisited(false)).isEmpty;
   }
+
+  Future<bool> allHousesVisited(int houseId) async {
+    return (await database.areAllHousesVisited(houseId));
+  }
+
+  Future<House?> getLastHouse(int houseId) async {
+    return (await database.getLastHouse(houseId));
+  }
+
 }

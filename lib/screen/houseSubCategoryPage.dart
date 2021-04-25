@@ -66,7 +66,26 @@ class _HouseSubCategoryPage extends State<HouseSubCategoryPage> {
 
                           // Here we have to check whether selected house are all visited or not. If visited then fetch the greatest house no (House object)
                           // and assign it to database helper model. And then also true the dialogOpen variable in database helper model.
+                          Provider.of<DatabaseHelper>(context,listen:false).allHousesVisited(widget.houseInfo.houseID).then((value){
 
+                            print(widget.houseInfo.houseID);
+
+                            if(value)
+                              Provider.of<DatabaseHelper>(context,listen:false).getLastHouse(widget.houseInfo.houseID).then((value){
+                                if(value!=null) {
+                                  Provider
+                                      .of<DatabaseHelper>(
+                                      context, listen: false)
+                                      .houseInfo = value;
+
+                                  Provider
+                                      .of<DatabaseHelper>(
+                                      context, listen: false).dialogOpen=true;
+
+                                  print("sub");
+                                }
+                              });
+                          });
                           Navigator.pop(context);
 
                           },

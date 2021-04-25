@@ -66,10 +66,12 @@ class HouseAppDatabase extends _$HouseAppDatabase {
 
     for (House house in houses) if (!house.visited) return false;
 
+
     return true;
   }
 
   Future<House?> getLastHouse(int houseID) => (select(houses)
+  ..where((tbl) => tbl.houseID.equals(houseID))
     ..orderBy([
           (t) => OrderingTerm(expression: t.number, mode: OrderingMode.desc)
     ])
