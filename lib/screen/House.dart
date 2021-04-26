@@ -68,9 +68,8 @@ class _House extends State<MyHouse> {
       // Creating a row with forward arrow if we have remaining houses length<5
       int remainingLength = widget.houseSubId.length - i;
       Row row = Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          SizedBox(width: 8,),
           // Using forward arrow for first elements
           for (int j = i; j < i + remainingLength - 1; j++)
             HouseNumber(
@@ -90,6 +89,9 @@ class _House extends State<MyHouse> {
             color: Colors.green,
             arrowDirection: "",
           ),
+          // Fill space for number not present in a row
+          for (int j = 0; j < 5 - remainingLength; j++)
+            Container(color: Colors.transparent,width: 70,)
         ],
       );
       // column.children.add(row);
@@ -119,7 +121,7 @@ class _House extends State<MyHouse> {
               ),
             )
           else
-          // If the current number is the last sub house then don't apply arrow
+          // Current number is the last sub house then don't apply arrow
             HouseNumber(
               houseInfo: House(
                   houseID: widget.houseId,
@@ -150,6 +152,9 @@ class _House extends State<MyHouse> {
       Row row = Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
+          // Fill space for number not present in a row
+          for (int j = 0; j < 5 - remainingLength; j++)
+            Container(color: Colors.transparent,width: 70,),
           //Don't assign arrow to last element.
           HouseNumber(
             houseInfo: House(

@@ -31,8 +31,11 @@ class _HouseNumber extends State<HouseNumber> {
             children: [
               // Creating backward arrow
               widget.arrowDirection == "backward"
-                  ? const Icon(IconData(0xe5a7,
-                      fontFamily: 'MaterialIcons', matchTextDirection: true,),size: 20.0)
+                  ? Container(
+                    margin: EdgeInsets.only(left:10),
+                    child: const Icon(IconData(0xe5a7,
+                        fontFamily: 'MaterialIcons', matchTextDirection: true,),size: 20.0),
+                  )
                   : SizedBox(
                       width: 0,
                       height: 0,
