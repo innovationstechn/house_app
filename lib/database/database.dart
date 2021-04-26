@@ -6,11 +6,15 @@ import 'dart:io';
 
 part 'database.g.dart';
 
+// We are using Moor in this application. Moor helps us streamline working with
+// SQLite, and allows us to use write queries in Dart. This eliminates
+// errors if we were to do all of the work managing SQL reading writing etc by
+// ourselves and allows us to develop faster.
+
+// This class is a representation of House table in the database.
 class Houses extends Table {
   IntColumn get houseID => integer()();
-
   IntColumn get number => integer()();
-
   BoolColumn get visited => boolean()();
 
   // Need to override primary key method to declare custom primary keys.
@@ -19,7 +23,7 @@ class Houses extends Table {
 }
 
 LazyDatabase _openConnection() {
-  // the LazyDatabase util lets us find the right location for the file async.
+  // LazyDatabase util lets us find the right location for the file async.
   return LazyDatabase(() async {
     // put the database file, called db.sqlite here, into the documents folder
     // for your app.
@@ -29,47 +33,43 @@ LazyDatabase _openConnection() {
   });
 }
 
-// This annotation tells moor to prepare a database class that uses both of the
+// This annotation tells moor to prepare a database class that uses Houses table.
 @UseMoor(tables: [Houses])
 class HouseAppDatabase extends _$HouseAppDatabase {
   // We tell the database where to store the data with this constructor
   HouseAppDatabase() : super(_openConnection());
 
+  // CRUD queries.
   Future<int> insertHouse(House house) => into(houses).insert(house);
-
   Future<int> deleteHouse(House house) => delete(houses).delete(house);
-
   Future<bool> updateHouse(House house) => update(houses).replace(house);
-
   Future<List<House>> getHouseById(int id) =>
       (select(houses)..where((tbl) => tbl.houseID.equals(id))).get();
-
   Future<List<House>> getAllHouses() => select(houses).get();
+  // CRUD end
 
+  // Get a list of house IDs present in the database.
   Future<List<int?>> getDistinctHouses() {
     final query = selectOnly(houses, distinct: true)
       ..addColumns([houses.houseID]);
     return query.map((row) => row.read(houses.houseID)).get();
   }
 
-  Stream<List<House>> allHousesStream() => select(houses).watch();
-
-  Future<List<House>> getOrderedHouses() => (select(houses)
-        ..orderBy([(Houses t) => OrderingTerm(expression: t.houseID)]))
-      .get();
-
+  // Gets all those houses which have their visited parameter equal to @visited.
   Future<List<House>> checkAllVisited(bool visited) =>
       (select(houses)..where((tbl) => tbl.visited.equals(visited))).get();
 
+  // Helps us check if the houses belonging to a particular houseID all have
+  // their visited attribute set to true.
   Future<bool> areAllHousesVisited(int houseID) async {
     List<House> houses = await getHouseById(houseID);
 
     for (House house in houses) if (!house.visited) return false;
 
-
     return true;
   }
 
+  // Get the last house (by number attribute) of a particular house ID.
   Future<House?> getLastHouse(int houseID) => (select(houses)
   ..where((tbl) => tbl.houseID.equals(houseID))
     ..orderBy([
