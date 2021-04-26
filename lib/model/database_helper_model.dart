@@ -58,8 +58,8 @@ class DatabaseHelper extends ChangeNotifier {
   // Insert data into database
   Future<void> insertData() async {
     // Here we can set no of houses and sub houses
-    int setHouseIds = 3;
-    int setSubHouses = 3;
+    int setHouseIds = 5;
+    int setSubHouses = 15;
 
     for (int i = 0; i < setHouseIds; i++) {
       for (int j = 0; j < setSubHouses - i; j++) {
@@ -77,8 +77,8 @@ class DatabaseHelper extends ChangeNotifier {
   // Restarting all the houses
   Future<void> updateAll() async {
     _mainHouseModelList.clear();
-    for (int i = 0; i < 3; i++) {
-      for (int j = 0; j < 3 - i; j++)
+    for (int i = 0; i < 5; i++) {
+      for (int j = 0; j < 15 - i; j++)
         await database
             .updateHouse(House(houseID: i + 1, number: j + 1, visited: false));
     }
