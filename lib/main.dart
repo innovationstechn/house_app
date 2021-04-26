@@ -63,22 +63,20 @@ class _MyHomePageState extends State<MyHomePage> {
               if (value == true) {
                 Provider.of<DatabaseHelper>(context, listen: false).dialogOpen =
                     false;
+                House houseInfo =Provider.of<DatabaseHelper>(context, listen: false).houseInfo;
+
                 // Fetching last house and showing dialog
-                Provider.of<DatabaseHelper>(context, listen: false)
-                    .getLast()
-                    .then((value) => {
-                          if (value != null)
                             showDialog(
                                 context: context,
                                 // Creating alert Dialog
                                 builder: (_) => AlertDialog(
                                       title: Text("House No " +
-                                          value.houseID.toString()),
+                                          houseInfo.houseID.toString()),
                                       content: Column(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                           Text("You looked at " +
-                                              value.number.toString() +
+                                              houseInfo.number.toString() +
                                               " houses"),
                                           Row(
                                             mainAxisAlignment:
@@ -108,8 +106,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                           )
                                         ],
                                       ),
-                                    ))
-                        });
+                                    ));
+
               } else {
                 // dialogOpen will be true if all sub houses of house are visited.
                 if (Provider.of<DatabaseHelper>(context, listen: false)
