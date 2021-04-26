@@ -18,8 +18,7 @@ class HouseSubCategoryPage extends StatefulWidget {
 }
 
 class _HouseSubCategoryPage extends State<HouseSubCategoryPage> {
-
-  // Creating List of house cards
+  // Creating List of houses
   List<_DummyCard> items = [
     _DummyCard(no: "1"),
     _DummyCard(no: "2"),
@@ -62,33 +61,33 @@ class _HouseSubCategoryPage extends State<HouseSubCategoryPage> {
                         child: Text("Ok"),
                         onPressed: () {
                           // Updating House
-                          Provider.of<DatabaseHelper>(context,listen:false).updateData(House(houseID: widget.houseInfo.houseID,number:widget.houseInfo.number,visited: true));
-
-                          // Here we have to check whether selected house are all visited or not. If visited then fetch the greatest house no (House object)
-                          // and assign it to database helper model. And then also true the dialogOpen variable in database helper model.
-                          Provider.of<DatabaseHelper>(context,listen:false).allHousesVisited(widget.houseInfo.houseID).then((value){
-
-                            print(widget.houseInfo.houseID);
-
-                            if(value)
-                              Provider.of<DatabaseHelper>(context,listen:false).getLastHouse(widget.houseInfo.houseID).then((value){
-                                if(value!=null) {
-                                  Provider
-                                      .of<DatabaseHelper>(
-                                      context, listen: false)
+                          Provider.of<DatabaseHelper>(context, listen: false)
+                              .updateData(House(
+                                  houseID: widget.houseInfo.houseID,
+                                  number: widget.houseInfo.number,
+                                  visited: true));
+                          // Here we have to check whether selected house are all visited or not. If visited then fetch the greatest house no (House object).
+                          Provider.of<DatabaseHelper>(context, listen: false)
+                              .allHousesVisited(widget.houseInfo.houseID)
+                              .then((value) {
+                            if (value)
+                              Provider.of<DatabaseHelper>(context,
+                                      listen: false)
+                                  .getLastHouse(widget.houseInfo.houseID)
+                                  .then((value) {
+                                if (value != null) {
+                                  Provider.of<DatabaseHelper>(context,
+                                          listen: false)
                                       .houseInfo = value;
-
-                                  Provider
-                                      .of<DatabaseHelper>(
-                                      context, listen: false).dialogOpen=true;
-
-                                  print("sub");
+                                  // It helps in determining whether we have to show dialog or not.
+                                  Provider.of<DatabaseHelper>(context,
+                                          listen: false)
+                                      .dialogOpen = true;
                                 }
                               });
                           });
                           Navigator.pop(context);
-
-                          },
+                        },
                       ))),
             ),
           )

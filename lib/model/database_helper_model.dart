@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:house_app/database/database.dart';
@@ -11,14 +9,13 @@ class DatabaseHelper extends ChangeNotifier {
   List<MainHouseModel> get mainHouseModelList => _mainHouseModelList;
   HouseAppDatabase database = new HouseAppDatabase();
   bool dialogOpen = false;
-  House houseInfo = House(houseID: 0,number: 0,visited: false);
+  House houseInfo = House(houseID: 0, number: 0, visited: false);
 
   DatabaseHelper() {
-
     loadData();
     // Fill up houses with dummy data if no data is present.
     database.getAllHouses().then((houses) {
-      if (houses.isEmpty){
+      if (houses.isEmpty) {
         insertData();
         loadData();
       };
@@ -26,8 +23,7 @@ class DatabaseHelper extends ChangeNotifier {
   }
 
   // Load data from database
-  void loadData() async{
-
+  void loadData() async {
     _mainHouseModelList.clear();
     // Getting houseId's for fetching their sub houses
     List<int?> houseIds = await database.getDistinctHouses();
@@ -54,7 +50,6 @@ class DatabaseHelper extends ChangeNotifier {
         //Adding houses with their sub houses
         _mainHouseModelList.add(model);
       }
-
     }
 
     notifyListeners();
@@ -62,28 +57,28 @@ class DatabaseHelper extends ChangeNotifier {
 
   // Insert data into database
   Future<void> insertData() async {
-
     // Here we can set no of houses and sub houses
-    int setHouseIds = 5;
-    int setSubHouses = 15;
+    int setHouseIds = 2;
+    int setSubHouses = 3;
 
     for (int i = 0; i < setHouseIds; i++) {
-      for (int j = 0; j < setSubHouses - i; j++){
+      for (int j = 0; j < setSubHouses - i; j++) {
         await database
-            .insertHouse(House(houseID: i + 1, number: j + 1, visited: false)).then((value){
-              // Loading list when all the data is inserted into database
-              if(i==setHouseIds-1 && j==setSubHouses-i-1)
-                loadData();
+            .insertHouse(House(houseID: i + 1, number: j + 1, visited: false))
+            .then((value) {
+          // Loading list when all the data is inserted into database
+          if (i == setHouseIds - 1 && j == setSubHouses - i - 1)
+            loadData();
         });
       }
     }
   }
 
   // Restarting all the houses
-  Future<void> updateAll() async{
+  Future<void> updateAll() async {
     _mainHouseModelList.clear();
-    for (int i = 0; i < 5; i++) {
-      for (int j = 0; j < 15 - i; j++)
+    for (int i = 0; i < 2; i++) {
+      for (int j = 0; j < 3 - i; j++)
         await database
             .updateHouse(House(houseID: i + 1, number: j + 1, visited: false));
     }
@@ -96,17 +91,28 @@ class DatabaseHelper extends ChangeNotifier {
     loadData();
   }
 
-  // Checking whether all houses are visited or not
+  // This method used for checking all the houses visited or not.
   Future<bool> checkAllVisited() async {
     return (await database.checkAllVisited(false)).isEmpty;
   }
 
+  // This method used for checking all sub houses are visited or not.
   Future<bool> allHousesVisited(int houseId) async {
     return (await database.areAllHousesVisited(houseId));
   }
 
+  // It will give the last sub house number of particular house.
   Future<House?> getLastHouse(int houseId) async {
     return (await database.getLastHouse(houseId));
   }
 
+  // It will give last sub house
+  Future<House?> getLast() async{
+    int house=0;
+    return await database.getDistinctHouses().then((value) async {
+      if(value.last!=null)
+         house = value.last!;
+      return (await database.getLastHouse(house));
+    });
+  }
 }

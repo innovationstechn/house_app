@@ -29,6 +29,7 @@ class _HouseNumber extends State<HouseNumber> {
         children: [
           Row(
             children: [
+              // Creating backward arrow
               widget.arrowDirection == "backward"
                   ? const Icon(IconData(0xe5a7,
                       fontFamily: 'MaterialIcons', matchTextDirection: true,),size: 20.0)
@@ -44,6 +45,7 @@ class _HouseNumber extends State<HouseNumber> {
                           builder: (context) => HouseSubCategoryPage(
                               houseInfo: widget.houseInfo)));
                 },
+                // Creating number with circular container
                 child: Container(
                     height: 40,
                     width: 40,
@@ -60,6 +62,7 @@ class _HouseNumber extends State<HouseNumber> {
                       border: Border.all(width: 1),
                     )),
               ),
+              // Creating Forward arrow
               widget.arrowDirection == "forward"
                   ? const Icon(IconData(58799,
                       fontFamily: 'MaterialIcons', matchTextDirection: true),size: 20.0)
@@ -69,6 +72,7 @@ class _HouseNumber extends State<HouseNumber> {
                     ),
             ],
           ),
+          // Creating downward arrow
           widget.arrowDirection == "downward"
               ? const Icon(IconData(58795,
                   fontFamily: 'MaterialIcons', matchTextDirection: true),size: 20.0)
