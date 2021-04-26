@@ -35,17 +35,17 @@ class DatabaseHelper extends ChangeNotifier {
 
         List<House> subHouses = await database.getHouseById(houseId);
         List<int> numbers = [];
-        List<bool> visitieds = [];
+        List<bool> visited = [];
 
         subHouses.forEach((House subHouse) {
           numbers.add(subHouse.number);
-          visitieds.add(subHouse.visited);
+          visited.add(subHouse.visited);
         });
 
         // Creating model for Main House Model list used for building UI.
         MainHouseModel model = new MainHouseModel();
         model.houseId = houseId;
-        model.visited = visitieds;
+        model.visited = visited;
         model.list = numbers;
         //Adding houses with their sub houses
         _mainHouseModelList.add(model);
@@ -74,7 +74,7 @@ class DatabaseHelper extends ChangeNotifier {
     }
   }
 
-  // Restarting all the houses
+  // Restarting all the houses by updating their visited value = false
   Future<void> updateAll() async {
     _mainHouseModelList.clear();
     for (int i = 0; i < 5; i++) {
@@ -106,13 +106,4 @@ class DatabaseHelper extends ChangeNotifier {
     return (await database.getLastHouse(houseId));
   }
 
-  // It will give last sub house
-  Future<House?> getLast() async{
-    int house=0;
-    return await database.getDistinctHouses().then((value) async {
-      if(value.last!=null)
-         house = value.last!;
-      return (await database.getLastHouse(house));
-    });
-  }
 }

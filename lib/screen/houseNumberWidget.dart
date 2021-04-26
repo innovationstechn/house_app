@@ -24,12 +24,13 @@ class _HouseNumber extends State<HouseNumber> {
   Widget build(BuildContext context) {
     return Container(
       height: 70,
+      // If we have arrow is in downward direction then width should be according to the size of number container
       width:  widget.arrowDirection == "downward" || widget.arrowDirection =="" ? 40 : 70,
       child: Column(
         children: [
           Row(
             children: [
-              // Creating backward arrow
+              // Creating backward arrow place at the right of the number.
               widget.arrowDirection == "backward"
                   ? Container(
                     margin: EdgeInsets.only(left:10),
@@ -44,6 +45,7 @@ class _HouseNumber extends State<HouseNumber> {
                 onTap: () {
                   Navigator.push(
                       context,
+                      // Navigating to the SubHouseCategory page for showing dummy houses and OK confirmation
                       MaterialPageRoute(
                           builder: (context) => HouseSubCategoryPage(
                               houseInfo: widget.houseInfo)));
@@ -65,7 +67,7 @@ class _HouseNumber extends State<HouseNumber> {
                       border: Border.all(width: 1),
                     )),
               ),
-              // Creating Forward arrow
+              // Creating Forward arrow place at the left of number container.
               widget.arrowDirection == "forward"
                   ? const Icon(IconData(58799,
                       fontFamily: 'MaterialIcons', matchTextDirection: true),size: 20.0)
@@ -75,7 +77,7 @@ class _HouseNumber extends State<HouseNumber> {
                     ),
             ],
           ),
-          // Creating downward arrow
+          // Creating downward arrow place at the bottom of number.
           widget.arrowDirection == "downward"
               ? const Icon(IconData(58795,
                   fontFamily: 'MaterialIcons', matchTextDirection: true),size: 20.0)

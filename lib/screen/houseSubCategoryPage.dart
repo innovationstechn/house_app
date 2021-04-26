@@ -38,6 +38,7 @@ class _HouseSubCategoryPage extends State<HouseSubCategoryPage> {
         children: [
           Container(
             height: MediaQuery.of(context).size.height * 0.8,
+            // Build a dummy card houses UI based on items list sequence
             child: ListView.builder(
               itemBuilder: (context, position) {
                 return Container(
@@ -111,6 +112,7 @@ class _DummyCard extends StatelessWidget {
         padding: const EdgeInsets.all(3.0),
         child: Column(
           children: [
+            // It will display House No at the start of card
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -122,6 +124,7 @@ class _DummyCard extends StatelessWidget {
             Card(
               child: Column(
                 children: [
+                  // It will show the TEXT at the center of the card.
                   Container(
                     // color:Colors.black,
                     // height: 60,
@@ -138,6 +141,7 @@ class _DummyCard extends StatelessWidget {
                       ],
                     ),
                   ),
+                  // It will show house at the bottom left by fetching it from assets
                   Row(
                     children: [
                       Align(

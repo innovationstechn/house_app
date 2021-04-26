@@ -51,21 +51,21 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Consumer<DatabaseHelper>(
         builder: (context, snapshot, child) {
-          // Check whether list is empty or not
+          // It should check whether mainHouseModelList has data because if there is no data present in it. It means database is inserting the data.
           if (Provider.of<DatabaseHelper>(context, listen: false)
                   .mainHouseModelList
                   .length >
               0) {
-            // Check all visited and show dialog on it.
+            // If all of the houses are visited then show the dialog with restart and cancel button.
             Provider.of<DatabaseHelper>(context, listen: false)
                 .checkAllVisited()
                 .then((value) {
               if (value == true) {
+                // Making it false because we don't want to load normal dialog box
                 Provider.of<DatabaseHelper>(context, listen: false).dialogOpen =
                     false;
+                // Fetching last house visited by user
                 House houseInfo =Provider.of<DatabaseHelper>(context, listen: false).houseInfo;
-
-                // Fetching last house and showing dialog
                             showDialog(
                                 context: context,
                                 // Creating alert Dialog
@@ -87,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                     //Closing dialog
                                                     Navigator.of(context).pop();
                                                   },
-                                                  child: Text("cancel")),
+                                                  child: Text("CANCEL")),
                                               SizedBox(
                                                 width: 20,
                                               ),
@@ -101,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                     //Closing dialog
                                                     Navigator.of(context).pop();
                                                   },
-                                                  child: Text("Restart")),
+                                                  child: Text("RESTART")),
                                             ],
                                           )
                                         ],
@@ -109,7 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     ));
 
               } else {
-                // dialogOpen will be true if all sub houses of house are visited.
+                // Showing normal dialog without any button and dialogOpen will be true if all sub houses of house are visited.
                 if (Provider.of<DatabaseHelper>(context, listen: false)
                         .dialogOpen ==
                     true) {
@@ -118,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   showDialog(
                       context: context,
                       builder: (_) =>
-                          // Showing dialog when sub houses of house are visited.
+                          // It will show dialog if all sub houses are visited
                           AlertDialog(
                             title: Text("House No " +
                                 Provider.of<DatabaseHelper>(context,
@@ -148,7 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
               itemBuilder: (context, position) {
-                // Creating houses
+                // Creating houses by passing their sub houses list of data
                 return new MyHouse(
                     houseId: snapshot.mainHouseModelList[position].houseId,
                     houseSubId: snapshot.mainHouseModelList[position].list,

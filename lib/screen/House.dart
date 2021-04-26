@@ -208,6 +208,7 @@ class _House extends State<MyHouse> {
       ],
     ));
 
+    // Creating a forward and backward rows
     for (int i = 0; i < widget.houseSubId.length; i = i + 5) {
       isForward = !isForward;
       // For making row using forward arrow
@@ -219,7 +220,7 @@ class _House extends State<MyHouse> {
       }
     }
 
-    // Placing rows in a card
+    // Placing the house number and sub houses rows in a card
     return Container(
           child: Card(
         color: Colors.white,
