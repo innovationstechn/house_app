@@ -58,7 +58,7 @@ class _HouseSubCategoryPage extends State<HouseSubCategoryPage> {
                       margin: EdgeInsets.all(10),
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(primary: Colors.blue),
-                        child: Text("Ok"),
+                        child: Text("OK"),
                         onPressed: () {
                           // Updating House
                           Provider.of<DatabaseHelper>(context, listen: false)
